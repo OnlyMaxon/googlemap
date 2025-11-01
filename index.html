@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D World Map with Countries</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 250px;
+        }
+        
+        .info-panel h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .info-panel p {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="info-panel">
+        <h2>2D World Map</h2>
+        <p>🗺️ 2D View with Countries</p>
+        <p>🔍 Zoom: Enabled</p>
+        <p>Use mouse wheel or +/- buttons to zoom</p>
+    </div>
+    
+    <div id="map"></div>
+    
+    <script>
+        let map;
+        
+        function initMap() {
+            // Initialize map with 2D view centered on the world
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 20, lng: 0 },
+                zoom: 3,
+                mapTypeId: 'roadmap', // Ensures 2D roadmap view (not satellite or terrain)
+                mapTypeControl: true,
+                mapTypeControlOptions: {
+                    style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                    position: google.maps.ControlPosition.TOP_RIGHT,
+                    mapTypeIds: ['roadmap'] // Only allow roadmap (2D) view
+                },
+                zoomControl: true,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.RIGHT_CENTER
+                },
+                streetViewControl: false, // Disable street view
+                fullscreenControl: true,
+                fullscreenControlOptions: {
+                    position: google.maps.ControlPosition.RIGHT_TOP
+                },
+                gestureHandling: 'greedy', // Allow zoom with mouse wheel
+                styles: [
+                    {
+                        // Style to emphasize countries
+                        featureType: "administrative.country",
+                        elementType: "geometry.stroke",
+                        stylers: [
+                            { color: "#4285F4" },
+                            { weight: 2 }
+                        ]
+                    },
+                    {
+                        // Hide unnecessary features to focus on countries
+                        featureType: "poi",
+                        stylers: [{ visibility: "off" }]
+                    },
+                    {
+                        // Simplify road display
+                        featureType: "road",
+                        stylers: [{ visibility: "simplified" }]
+                    },
+                    {
+                        // Keep administrative boundaries visible
+                        featureType: "administrative",
+                        elementType: "geometry",
+                        stylers: [{ visibility: "on" }]
+                    },
+                    {
+                        // Show country labels
+                        featureType: "administrative.country",
+                        elementType: "labels",
+                        stylers: [{ visibility: "on" }]
+                    }
+                ]
+            });
+            
+            // Add zoom change listener to log zoom level
+            map.addListener('zoom_changed', function() {
+                console.log('Current zoom level: ' + map.getZoom());
+            });
+            
+            // Add click listener for country information
+            map.addListener('click', function(event) {
+                console.log('Clicked location: ' + event.latLng.toString());
+            });
+        }
+        
+        window.initMap = initMap;
+    </script>
+    
+    <!-- Google Maps API - Replace YOUR_API_KEY with actual API key -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+    </script>
+</body>
+</html>
