@@ -35,7 +35,6 @@ For testing purposes without an API key, you can use a development/testing key, 
 
 2. **Pan**: 
    - Click and drag to move around the map
-   - Use arrow keys on keyboard
 
 3. **View Countries**: 
    - Country borders are highlighted in blue
@@ -46,8 +45,10 @@ For testing purposes without an API key, you can use a development/testing key, 
 
 ```
 .
-├── index.html          # Main HTML file with embedded map
-└── README.md          # This file
+├── index.html          # Google Maps API version (requires API key)
+├── map-simple.html     # Standalone version (works without API key)
+├── TESTING.md          # Testing documentation and verification results
+└── README.md           # This file
 ```
 
 ## Map Configuration
